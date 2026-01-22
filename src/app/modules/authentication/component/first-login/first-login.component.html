@@ -1,0 +1,68 @@
+<div class="min-h-screen w-full flex items-center justify-center relative bg-gray-900 p-4 overflow-hidden">
+
+  <img src="/hero.jpg" alt="Fondo" class="absolute inset-0 w-full h-full object-cover opacity-40 z-0">
+  <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-gray-100 relative z-10">
+    <div class="flex justify-center mb-6">
+      <img src="/loguito2.png" alt="TechFix" class="h-16 w-auto object-contain">
+    </div>
+
+    <div class="text-center mb-8">
+      <h2 class="text-2xl font-bold text-gray-800">
+        Configura tu Acceso
+      </h2>
+      <p class="text-sm text-gray-500 mt-2">
+        Por seguridad, debes cambiar tu contraseña temporal para continuar.
+      </p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="resetPassword()" class="space-y-5">
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Nueva Contraseña</label>
+        <input formControlName="password" type="password" placeholder="••••••••"
+          class="input input-bordered w-full focus:ring-2 focus:ring-techfix-blue focus:border-transparent transition-all" />
+
+        <div class="transition-all duration-500 ease-in-out overflow-hidden" [ngClass]="{
+            'max-h-0 opacity-0': !passwordStrength, 
+            'max-h-24 opacity-100 mt-2': passwordStrength
+          }">
+          <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full transition-all duration-500 ease-out" [class]="strengthColor + ' ' + strengthWidth">
+            </div>
+          </div>
+          <p class="text-xs mt-1 text-right font-medium text-gray-500">
+            Seguridad:
+            <span [class]="strengthColor.replace('bg-', 'text-') + ' font-bold uppercase ml-1'">
+              {{ passwordStrength }}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Confirmar Contraseña</label>
+        <input formControlName="confirmPassword" type="password" placeholder="••••••••"
+          class="input input-bordered w-full focus:ring-2 focus:ring-techfix-blue" />
+
+        <div class="transition-all duration-300 ease-in-out overflow-hidden"
+          [ngClass]="{'max-h-0 opacity-0': !form.hasError('mismatch') || !form.get('confirmPassword')?.touched, 'max-h-10 opacity-100': form.hasError('mismatch') && form.get('confirmPassword')?.touched}">
+          <span class="text-red-500 text-xs mt-1 flex items-center gap-1">
+            <i class="fa-solid fa-circle-exclamation"></i> Las contraseñas no coinciden
+          </span>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="form.invalid"
+        class="btn bg-techfix-orange hover:bg-orange-600 text-white w-full mt-4 border-none shadow-md hover:shadow-lg transition-all disabled:bg-gray-300 disabled:text-gray-500">
+        Establecer Contraseña e Ingresar
+      </button>
+
+    </form>
+
+  </div>
+
+  <div class="absolute bottom-4 text-xs text-gray-400">
+    &copy; 2024 TechFix Inc.
+  </div>
+
+</div>

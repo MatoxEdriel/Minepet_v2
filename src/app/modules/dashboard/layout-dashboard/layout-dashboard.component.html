@@ -1,0 +1,16 @@
+<div class=" min-h-screen bg-slate-100 dark:bg-gray-900 flex flex-col transition-colors duration-300">
+    <app-Topbar (toggleMenu)="toggleSidebar()"></app-Topbar>
+
+
+    <app-Sidebar [isOpen]="isSidebarOpen" [menuItems]="(menuData$ | async) || []"> ></app-Sidebar>
+
+
+
+    <main class="flex-1 p-6 pt-20 transition-all duration-300 ease-in-out"
+        [ngClass]="{'md:ml-64': isSidebarOpen, 'md:ml-0': !isSidebarOpen}">
+
+        <router-outlet></router-outlet>
+
+    </main>
+
+</div>

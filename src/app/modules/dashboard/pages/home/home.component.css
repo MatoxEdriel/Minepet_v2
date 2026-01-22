@@ -1,0 +1,36 @@
+.grid-stack {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    padding: 16px;
+
+}
+
+
+.grid-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: url('/loguito2.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.15;
+    pointer-events: none;
+
+}
+
+
+
+/* Texto */
+.grid-placeholder {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    pointer-events: none;
+}

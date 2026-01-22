@@ -1,0 +1,74 @@
+<aside class="fixed left-0 top-20 z-40 h-[calc(100vh-2rem)] w-64 m-4 rounded-xl shadow-lg transition-transform duration-300 ease-in-out overflow-hidden
+         bg-white dark:bg-gray-800 
+         border border-gray-100 dark:border-gray-700" [ngClass]="isOpen ? 'translate-x-0' : '-translate-x-full'">
+
+  <div class="h-full px-4 py-4 overflow-y-auto custom-scrollbar">
+
+    <div *ngFor="let section of menuItems" class="mb-6">
+
+      <h3 *ngIf="section.title" class="mb-3 px-3 text-xs font-bold uppercase tracking-wider
+                 text-gray-400 dark:text-gray-500">
+        {{ section.title }}
+      </h3>
+
+      <ul class="space-y-1">
+        <li *ngFor="let item of section.items">
+
+          <a *ngIf="!item.children" [routerLink]="item.path"
+            routerLinkActive="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-semibold"
+            [routerLinkActiveOptions]="{exact: true}" class="flex items-center px-3 py-2.5 rounded-lg transition-all duration-200 group
+                   text-gray-600 dark:text-gray-300
+                   hover:bg-gray-50 dark:hover:bg-gray-700 
+                   hover:text-gray-900 dark:hover:text-white">
+
+            <i [class]="item.icon + ' fa-fw'" class="text-lg mr-3 transition-colors 
+                     text-gray-400 dark:text-gray-500
+                     group-hover:text-gray-600 dark:group-hover:text-gray-300"
+              routerLinkActive="text-emerald-500 dark:text-emerald-400"></i>
+
+            <span class="text-sm font-medium">{{ item.label }}</span>
+          </a>
+
+          <div *ngIf="item.children">
+            <button (click)="toggleSubmenu(item.label)" class="flex items-center w-full px-3 py-2.5 rounded-lg transition-all duration-200 group focus:outline-none w-full
+                     text-gray-600 dark:text-gray-300
+                     hover:bg-gray-50 dark:hover:bg-gray-700 
+                     hover:text-gray-900 dark:hover:text-white">
+
+              <i [class]="item.icon + ' fa-fw'" class="text-lg mr-3 
+                        text-gray-400 dark:text-gray-500
+                        group-hover:text-gray-600 dark:group-hover:text-gray-300"></i>
+
+              <span class="flex-1 ml-3 text-left text-sm font-medium">{{ item.label }}</span>
+
+              <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-300 
+                        text-gray-400 dark:text-gray-500" [ngClass]="{'rotate-180': expandedMenu === item.label}"></i>
+            </button>
+
+            <div class="overflow-hidden transition-all duration-300 ease-in-out"
+              [style.max-height]="expandedMenu === item.label ? '500px' : '0px'">
+
+              <ul class="pt-1 pb-2 pl-4 space-y-1">
+                <li *ngFor="let child of item.children">
+
+                  <a [routerLink]="child.path"
+                    routerLinkActive="text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-900/20"
+                    class="flex items-center w-full px-3 py-2 text-sm transition-colors rounded-lg 
+                           text-gray-500 dark:text-gray-400
+                           hover:text-gray-900 dark:hover:text-white
+                           hover:bg-gray-50 dark:hover:bg-gray-700">
+
+                    <i
+                      [class]="child.icon ? (child.icon + ' fa-fw mr-2') : 'fa-regular fa-circle text-[6px] mr-3 opacity-50'"></i>
+                    {{ child.label }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>

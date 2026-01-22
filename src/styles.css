@@ -1,0 +1,43 @@
+/* styles.scss */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::view-transition-new(root) {
+    animation: clip 0.6s ease-in;
+    mix-blend-mode: normal;
+    z-index: 9999;
+}
+
+::view-transition-old(root),
+.dark::view-transition-old(root) {
+    z-index: -1;
+    animation: none;
+}
+
+@keyframes clip {
+    from {
+        clip-path: circle(0% at var(--x) var(--y));
+    }
+
+    to {
+        clip-path: circle(150% at var(--x) var(--y));
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0);
+
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.animate-route {
+    animation: fadeInUp 0.4s ease-out forwards;
+}

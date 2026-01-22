@@ -1,0 +1,16 @@
+<ng-container *ngIf="(isOnline$ | async) === false">
+
+  <div class="fixed top-0 left-0 w-full z-[9999] animate-slide-down">
+    <div class="bg-red-600 text-white px-4 py-3 shadow-lg flex items-center justify-center gap-2">
+
+      <i class="fa-solid fa-wifi-slash text-xl"></i>
+
+      <div class="flex flex-col text-center">
+        <span class="font-bold text-sm">Sin conexión a Internet</span>
+        <span class="text-xs opacity-90">Verifica tu red. TechFix intentará reconectar...</span>
+      </div>
+
+    </div>
+  </div>
+
+</ng-container>

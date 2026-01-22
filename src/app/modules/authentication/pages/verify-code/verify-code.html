@@ -1,0 +1,45 @@
+<div class="card">
+  <div class="flex items-center justify-between mb-4">
+
+
+    <h2 class="text-3xl font-bold text-techfix-blue">
+
+      Verificación de código
+    </h2>
+
+    <button type="button" onclick="history.back()" class="text-techfix-orange transition-all duration-200
+         hover:scale-105 active:scale-95">
+      <i class="fa-solid fa-arrow-left text-2xl"></i>
+    </button>
+
+
+  </div>
+
+  <p>
+    Hemos enviado un número de verificación a tu correo.
+    Introduce el código en el recuadro inferior.
+  </p>
+  <img src="email.png" alt="Verificación por email" class="w-20 mx-auto p-4 block">
+
+
+  <hr />
+
+  <div class="my-4">
+
+    <ng-otp-input class="flex justify-center" (onInputChange)="onOtpChange($event)" [config]="{length: 4}">
+
+    </ng-otp-input>
+
+  </div>
+
+
+
+
+
+
+  <button type="button" (click)="verifyCode()"
+    class="btn bg-techfix-orange text-white w-full mt-2 ">Verificación</button>
+
+
+
+</div>
