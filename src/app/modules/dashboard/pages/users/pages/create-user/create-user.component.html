@@ -1,73 +1,90 @@
 <dialog #modalRef class="modal">
   <div class="modal-box w-11/12 max-w-3xl bg-gray-50 dark:bg-[#0f111a]">
 
-    <div class="border-b pb-2 mb-4">
-      <h3 class="font-bold text-xl  ">
-        Registrar Nuevo Usuario
+    <ng-container *ngIf="!isSuccess">
+
+      <div class="border-b pb-2 mb-4">
+        <h3 class="font-bold text-xl">Registrar Nuevo Usuario</h3>
+        <p class="text-xs text-gray-500 pt-5">Completa la información del cliente</p>
+      </div>
+
+      <form [formGroup]="userForm" (ngSubmit)="save()">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <div class="form-control w-full">
+            <label class="label"><span class="label-text font-medium">Nombre</span></label>
+            <input type="text" formControlName="name" placeholder="Ej. Juan"
+              class="input input-bordered w-full bg-white dark:bg-[#1e212b] border-gray-200 dark:border-gray-700" />
+          </div>
+
+          <div class="form-control w-full">
+            <label class="label"><span class="label-text font-medium">Apellido</span></label>
+            <input type="text" formControlName="last_name" placeholder="Ej. Pérez"
+              class="input input-bordered w-full bg-white dark:bg-[#1e212b] border-gray-200 dark:border-gray-700" />
+          </div>
+
+          <div class="form-control w-full">
+            <label class="label"><span class="label-text font-medium">Email</span></label>
+            <input type="email" formControlName="email" placeholder="juan@correo.com"
+              class="input input-bordered w-full bg-white dark:bg-[#1e212b] border-gray-200 dark:border-gray-700" />
+          </div>
+
+          <div class="form-control w-full">
+            <label class="label"><span class="label-text font-medium">Teléfono</span></label>
+            <input type="text" formControlName="phone" placeholder="099..."
+              class="input input-bordered w-full bg-white dark:bg-[#1e212b] border-gray-200 dark:border-gray-700" />
+          </div>
+
+          <div class="form-control w-full">
+            <label class="label"><span class="label-text font-medium">Rol de Usuario</span></label>
+            <select class="select select-bordered w-full bg-white dark:bg-[#1e212b]" formControlName="role_id">
+              <option disabled selected value="">Seleccione un rol</option>
+              <option *ngFor="let rol of roles" [ngValue]="rol.id">{{ rol.label }}</option>
+            </select>
+          </div>
+
+          <div class="form-control w-full">
+            <label class="label"><span class="label-text font-medium">Fecha de Nacimiento</span></label>
+            <input type="date" formControlName="birthday_day"
+              class="input input-bordered w-full bg-white dark:bg-[#1e212b] border-gray-200 dark:border-gray-700" />
+          </div>
+
+          <div class="form-control w-full md:col-span-2">
+            <label class="label"><span class="label-text font-medium">Dirección Domicilio</span></label>
+            <input type="text" formControlName="address" placeholder="Av. Principal 123 y Calle 5"
+              class="input input-bordered w-full bg-white dark:bg-[#1e212b] border-gray-200 dark:border-gray-700" />
+          </div>
+
+          <div class="form-control w-full md:col-span-2" *ngIf="userForm.get('user_name')?.value">
+            <label class="label"><span class="label-text font-medium text-gray-400">Usuario Generado</span></label>
+            <input type="text" formControlName="user_name" readonly
+              class="input input-bordered w-full bg-gray-100 text-gray-500 cursor-not-allowed" />
+          </div>
+
+        </div>
+
+        <div class="modal-action mt-6 border-t pt-4">
+          <button type="button" class="btn btn-ghost" (click)="close()">Cancelar</button>
+
+          <button type="submit" class="btn btn-primary px-8" [disabled]="userForm.invalid">
+            <i class="fa-solid fa-save mr-2"></i> Guardar Cliente
+          </button>
+        </div>
+
+      </form>
+    </ng-container>
+
+    <div *ngIf="isSuccess" class="flex flex-col items-center justify-center py-10 min-h-[400px]">
+      <ng-lottie [options]="optionsSuccess" height="200px" width="200px">
+      </ng-lottie>
+
+      <h3 class="text-xl font-bold mt-4 text-green-600">
+        ¡Usuario Registrado Exitosamente!
       </h3>
-      <p class="text-xs text-gray-500 pt-5">Completa la información del cliente</p>
+      <p class="text-gray-500 mt-2">Cerrando ventana...</p>
     </div>
 
-    <form [formGroup]="userForm" (ngSubmit)="save()">
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-        <div class="form-control w-full">
-          <label class="label"><span class="label-text font-medium">Nombre</span></label>
-          <input type="text" formControlName="name" placeholder="Ej. Juan"
-            class="input input-bordered w-full bg-white dark:bg-[#1e212b] border-gray-200 dark:border-gray-700" />
-        </div>
-
-        <div class="form-control w-full">
-          <label class="label"><span class="label-text font-medium">Apellido</span></label>
-          <input type="text" formControlName="last_name" placeholder="Ej. Pérez"
-            class="input input-bordered w-full bg-white dark:bg-[#1e212b] border-gray-200 dark:border-gray-700" />
-        </div>
-
-        <div class="form-control w-full">
-          <label class="label"><span class="label-text font-medium">Email</span></label>
-          <input type="email" formControlName="email" placeholder="juan@correo.com"
-            class="input input-bordered w-full bg-white dark:bg-[#1e212b] border-gray-200 dark:border-gray-700" />
-
-        </div>
-
-        <div class="form-control w-full">
-          <label class="label"><span class="label-text font-medium">Teléfono</span></label>
-          <input type="number" formControlName="phone" placeholder="099..."
-            class="input input-bordered w-full bg-white dark:bg-[#1e212b] border-gray-200 dark:border-gray-700" />
-        </div>
-
-        <div class="form-control w-full">
-          <label class="label"><span class="label-text font-medium">Rol de Usuario</span></label>
-          <select class="select select-bordered w-full bg-white dark:bg-[#1e212b]" formControlName="role">
-            <option disabled selected value="">Seleccione un rol</option>
-            <option *ngFor="let rol of roles" [value]="rol.id">{{ rol.label }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-control w-full">
-          <label class="label"><span class="label-text font-medium">Fecha de Nacimiento</span></label>
-          <input type="date" formControlName="birth_date"
-            class="input input-bordered w-full bg-white dark:bg-[#1e212b] border-gray-200 dark:border-gray-700" />
-        </div>
-
-        <div class="form-control w-full md:col-span-2">
-          <label class="label"><span class="label-text font-medium">Dirección Domicilio</span></label>
-          <input type="text" formControlName="address" placeholder="Av. Principal 123 y Calle 5"
-            class="input input-bordered w-full bg-white dark:bg-[#1e212b] border-gray-200 dark:border-gray-700" />
-        </div>
-
-      </div>
-      <div class="modal-action mt-6 border-t pt-4">
-        <button type="button" class="btn btn-ghost" (click)="close()">Cancelar</button>
-
-        <button type="submit" class="btn btn-primary px-8" [disabled]="userForm.invalid">
-          <i class="fa-solid fa-save mr-2"></i> Guardar Cliente
-        </button>
-      </div>
-
-    </form>
   </div>
 
   <form method="dialog" class="modal-backdrop">
