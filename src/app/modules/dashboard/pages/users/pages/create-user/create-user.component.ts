@@ -44,6 +44,15 @@ export class CreateUserComponent implements OnInit {
 
   */
 
+  emailDespite: AnimationOptions = {
+    path: '/email.json',
+    loop: true,
+    autoplay: true
+
+
+  }
+
+
   optionsSuccess: AnimationOptions = {
     path: '/veterinarian_created.json',
     loop: false,
