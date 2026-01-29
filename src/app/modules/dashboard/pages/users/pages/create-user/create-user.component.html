@@ -39,7 +39,8 @@
 
           <div class="flex justify-between items-start mb-6">
             <div>
-              <h3 class="font-bold text-2xl text-gray-800 dark:text-white">Registrar Nuevo Usuario</h3>
+              <h3 class="font-bold text-2xl text-gray-800 dark:text-white ">Registrar Nuevo Usuario
+              </h3>
               <p class="text-sm text-gray-400 mt-1">Completa la información detallada para dar de alta al cliente.</p>
             </div>
             <button (click)="close()"
@@ -113,7 +114,7 @@
               </button>
 
               <button type="submit"
-                class="btn bg-[#f59e0b] hover:bg-[#d97706] border-none text-white px-8 rounded-full shadow-md shadow-orange-200"
+                class="btn bg-[#f59e0b] hover:bg-[#d97706] border-none text-white px-8 rounded-full shadow-md shadow-orange-200 disabled:bg-pink-500 disabled:text-white"
                 [disabled]="userForm.invalid">
                 <i class="fa-solid fa-user-plus mr-2"></i> REGISTRAR
               </button>

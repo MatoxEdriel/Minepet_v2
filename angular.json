@@ -53,6 +53,13 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "allowedHosts": [
+              "localhost",
+              "lvh.me",
+              ".lvh.me"
+            ]
+          },
           "configurations": {
             "production": {
               "buildTarget": "TechFix:build:production"

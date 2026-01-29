@@ -5,7 +5,7 @@ import { StorageService } from '../../../../../shared/services/Storage.service';
 import { environments } from '../../../../../../environment/environment.dev';
 import { Observable } from 'rxjs';
 import { IHttpResponse } from '../../../../../interfaces/response.interface';
-import { CreateUserDto, UserResponse } from '../interfaces/user.interface';
+import { CreateUserDto, IUser, PaginatedResponse, UserResponse } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,25 @@ export class UserService {
   create(userDto: CreateUserDto): Observable<IHttpResponse<UserResponse>> {
     return this._http.post<IHttpResponse<UserResponse>>(this._endpoint, userDto);
   }
+
+
+
+
+  getAll(
+    page: number,
+    limit: number
+  ): Observable<IHttpResponse<PaginatedResponse<IUser>>> {
+    return this._http.get<IHttpResponse<PaginatedResponse<IUser>>>(
+      this._endpoint,
+      {
+        params: {
+          page,
+          limit,
+        },
+      }
+    );
+  }
+
 
 
   constructor() { }
