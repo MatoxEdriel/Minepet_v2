@@ -1,0 +1,118 @@
+<div *ngIf="user" class="flex flex-col gap-6 animate-fade-in">
+
+  <div
+    class="bg-white dark:bg-[#1e212b] p-6 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+    <div class="flex items-center gap-5">
+      <div
+        class="w-20 h-20 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center overflow-hidden">
+        <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+          {{ getInitials() }}
+        </span>
+      </div>
+
+      <div>
+        <h1 class="text-2xl font-bold flex items-center gap-3">
+          {{ user.name }} {{ user.last_name }}
+          <span
+            [ngClass]="user.status === 'Activo' ? 'bg-green-500/10 text-green-500 border-green-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'"
+            class="text-xs px-2 py-0.5 rounded-full border">
+            {{ user.status }}
+          </span>
+        </h1>
+        <p class="text-gray-400 text-sm mt-1">@{{ user.user_name }} • {{ user.role }}</p>
+
+        <div class="flex gap-3 mt-4">
+          <button
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+            <i class="fa-solid fa-pen"></i> Editar Perfil
+          </button>
+          <button
+            class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            Acciones
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <div class="bg-white dark:bg-[#1e212b] p-6 rounded-3xl">
+      <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+        <i class="fa-regular fa-user text-blue-500"></i> Información Personal
+      </h3>
+      <div class="grid grid-cols-1 gap-y-4 text-sm">
+        <div>
+          <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Correo Electrónico</p>
+          <p class="font-medium mt-0.5 text-gray-800 dark:text-gray-200">{{ user.email }}</p>
+        </div>
+        <div>
+          <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Teléfono</p>
+          <p class="font-medium mt-0.5 text-gray-800 dark:text-gray-200">{{ user.phone }}</p>
+        </div>
+        <div>
+          <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Dirección</p>
+          <p class="font-medium mt-0.5 text-gray-800 dark:text-gray-200">{{ user.address }}</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">ID de Usuario</p>
+            <p class="font-medium mt-0.5 text-gray-800 dark:text-gray-200">#{{ user.id }}</p>
+          </div>
+          <div>
+            <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Rol</p>
+            <p class="font-medium mt-0.5 text-gray-800 dark:text-gray-200">{{ user.role }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-[#1e212b] p-6 rounded-3xl">
+      <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+        <i class="fa-solid fa-chart-line text-blue-500"></i> Actividad
+      </h3>
+      <div class="flex items-center justify-around mt-2">
+        <div class="text-center p-3 bg-gray-50 dark:bg-[#15171e] rounded-xl w-32">
+          <p class="text-xs text-gray-500 mb-1">ACCESOS</p>
+          <p class="text-2xl font-bold">12</p>
+        </div>
+        <div class="text-center p-3 bg-blue-500/10 rounded-xl w-32 border border-blue-500/20">
+          <p class="text-xs text-blue-400 mb-1">EFICIENCIA</p>
+          <p class="text-2xl font-bold text-blue-500">100%</p>
+        </div>
+      </div>
+      <div class="mt-6">
+        <div class="flex justify-between text-xs mb-1 font-bold text-gray-500">
+          <span>COMPLETADO PERFIL</span>
+          <span>85%</span>
+        </div>
+        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+          <div class="bg-blue-600 h-1.5 rounded-full" style="width: 85%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-red-500/5 border border-red-500/20 p-6 rounded-3xl md:col-span-2">
+      <h3 class="text-lg font-bold mb-2 text-red-500">Seguridad de la Cuenta</h3>
+      <p class="text-xs text-gray-400 mb-4">Al desactivar la cuenta, el usuario perderá acceso inmediato.</p>
+      <div class="flex gap-4">
+        <button
+          class="flex-1 border border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white font-medium py-2 rounded-lg text-sm transition-all">
+          Desactivar Cuenta
+        </button>
+        <button
+          class="px-4 border border-gray-300 dark:border-gray-600 text-gray-500 py-2 rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">
+          Resetear Password
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="!user"
+  class="h-full flex flex-col items-center justify-center text-gray-400 bg-white dark:bg-[#1e212b] rounded-3xl border-2 border-dashed border-gray-200 dark:border-gray-800 p-12">
+  <i class="fa-solid fa-user-check text-6xl mb-4 opacity-10"></i>
+  <p class="font-medium text-lg">Panel de Detalle</p>
+  <p class="text-sm">Selecciona un miembro para gestionar su información</p>
+</div>

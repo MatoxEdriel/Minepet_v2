@@ -1,5 +1,7 @@
 <dialog #modalRef class="modal">
+  <app-toast></app-toast>
   <div class="modal-box w-11/12 max-w-5xl p-0 bg-white dark:bg-[#0f111a] rounded-3xl overflow-hidden">
+
 
     <ng-container *ngIf="!isSuccess">
       <div class="flex flex-col md:flex-row h-full">
@@ -136,3 +138,5 @@
     <button (click)="close()">close</button>
   </form>
 </dialog>
+
+<app-toast></app-toast>

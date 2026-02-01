@@ -5,11 +5,12 @@ import { UserService } from '../../services/user.service';
 import { last } from 'rxjs';
 import { ToastService } from '../../../../../../shared/services/Toast.service';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';
+import { ToastComponent } from "../../../../../../shared/components/toast/toast.component";
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.css'],
-  imports: [ReactiveFormsModule, CommonModule, LottieComponent]
+  imports: [ReactiveFormsModule, CommonModule, LottieComponent, ToastComponent]
 })
 export class CreateUserComponent implements OnInit {
 
@@ -113,6 +114,22 @@ export class CreateUserComponent implements OnInit {
 
   }
 
+
+  sendPasswordEmail() {
+    if (this.userForm.valid) {
+
+
+
+    } else {
+
+      this.userForm.markAllAsTouched();
+
+
+    }
+
+
+  }
+
   //Haremos un user name no mas con el nombre y apellido
   createUserName(name: string, last_name: string): string {
     return (name[0] + last_name).toLowerCase();
@@ -162,7 +179,14 @@ export class CreateUserComponent implements OnInit {
 
       },
       error: (err) => {
-        console.error(err)
+        const apiError = err?.error;
+
+        const message = apiError?.error || 'Usuario Existente'
+
+        this.toastService.show(message, 'error')
+
+        // this.toastService.show()
+
       }
     })
 

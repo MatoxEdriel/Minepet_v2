@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../interfaces/table.interface';
+import { UserService } from './services/user.service';
+import { IUser } from './interfaces/user.interface';
+import { ToastService } from '../../../../shared/services/Toast.service';
 
 @Component({
   selector: 'app-users',
@@ -8,6 +11,22 @@ import { TableColumn } from '../../../../interfaces/table.interface';
   standalone: false
 })
 export class UsersComponent implements OnInit {
+
+
+
+  //sELECCIONAR cada usuario 
+  selectedUser: IUser | null = null
+
+
+  userList: IUser[]
+    = []
+
+  pagination = {
+    page: 1,
+    limit: 5,
+    total: 0
+
+  }
 
 
   tableColumns: TableColumn[] = [
@@ -27,15 +46,85 @@ export class UsersComponent implements OnInit {
   ];
 
 
-  userList = [
-    { id: 1, name: 'Gabriel Gomez', email: 'gabriel@techfix.com', role: 'Admin', status: 'Activo' },
-    { id: 2, name: 'Maria Perez', email: 'maria@techfix.com', role: 'Vendedor', status: 'Inactivo' },
-    { id: 3, name: 'Carlos Ruiz', email: 'carlos@techfix.com', role: 'Técnico', status: 'Pendiente' },
-  ];
+  // userList = [
+  //   { id: 1, name: 'Gabriel Gomez', email: 'gabriel@techfix.com', role: 'Admin', status: 'Activo' },
+  //   { id: 2, name: 'Maria Perez', email: 'maria@techfix.com', role: 'Vendedor', status: 'Inactivo' },
+  //   { id: 3, name: 'Carlos Ruiz', email: 'carlos@techfix.com', role: 'Técnico', status: 'Pendiente' },
+  // ];
 
-  constructor() { }
+
+
+
+
+
+
+  constructor(
+    private readonly _toastService: ToastService,
+    private readonly _userService: UserService) { }
 
   ngOnInit() {
+    console.log("Si activa")
+    this.getAll();
+  }
+
+  trackById(index: number, user: IUser) {
+    return user.id
+  }
+
+  selectUser(user: IUser) {
+    this._userService.getById(user.id).subscribe({
+      next: (response: any) => {
+        this.selectedUser = response.data.data;
+      },
+      error: (err) => {
+        this._toastService.show('Error al cargar detalle', 'error');
+      }
+    });
+  }
+
+
+
+
+
+
+  getAll() {
+
+
+    //recuerdo 
+    this._userService.getAll(this.pagination.page, this.pagination.limit).subscribe({
+
+      next: (response) => {
+
+        const data = response.data;
+
+        this.userList = data.items.map(user => ({
+          ...user
+        }));
+
+        this.pagination.total = data.pagination.total;
+
+
+
+
+      },
+      error: (err) => {
+        const apiError = err.error;
+        let message = apiError?.message
+
+        this._toastService.show(message, 'error')
+
+      }
+
+
+
+    })
+
+
+
+
+
+
+
   }
 
 
@@ -61,6 +150,6 @@ export class UsersComponent implements OnInit {
   }
 
   refreshTable() {
-    console.log("xdxd")
+    this.getAll();
   }
 }

@@ -11,6 +11,8 @@ import { ServicesTechfixComponent } from './pages/services-techfix/services-tech
 import { UsersComponent } from './pages/users/users.component';
 import { TableListComponent } from '../../shared/components/table-list/table-list.component';
 import { CreateUserComponent } from "./pages/users/pages/create-user/create-user.component";
+import { UsercardComponent } from '../../shared/components/User-card/usercard/usercard.component';
+import { DataDetailComponent } from '../../shared/components/data-detail/data-detail/data-detail.component';
 
 @NgModule({
   imports: [
@@ -22,8 +24,11 @@ import { CreateUserComponent } from "./pages/users/pages/create-user/create-user
     TopbarComponent,
     DashboardCardComponent,
     TableListComponent,
-    CreateUserComponent
-],
+    CreateUserComponent,
+    UsercardComponent,
+    DataDetailComponent
+
+  ],
   declarations: [LayoutDashboardComponent, HomeComponent, ServicesTechfixComponent, UsersComponent]
 })
 export class DashboardModule { }

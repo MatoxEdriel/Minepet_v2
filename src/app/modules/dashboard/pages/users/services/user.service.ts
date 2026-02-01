@@ -16,7 +16,7 @@ export class UserService {
   private readonly _resource = 'users';
 
   private readonly _baseUrl = environments.api.baseUrl;
-
+  //http://localhost:3000/api/users?page=1&limit=5
 
   private get _endpoint(): string {
     return `${this._baseUrl}/${this._resource}`;
@@ -28,8 +28,13 @@ export class UserService {
   }
 
 
+  getById(id: number): Observable<IHttpResponse<IUser>> {
+    return this._http.get<IHttpResponse<IUser>>(`${this._endpoint}/${id}`);
+  }
 
 
+
+  //
   getAll(
     page: number,
     limit: number

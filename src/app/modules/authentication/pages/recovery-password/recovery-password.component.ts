@@ -40,10 +40,7 @@ export class RecoveryPasswordComponent implements OnInit {
 
   }
 
-
-
   ngOnInit() {
-
     this.email = this.form.get('email') as FormControl;
   }
 
@@ -55,7 +52,8 @@ export class RecoveryPasswordComponent implements OnInit {
       this.emailService.sendEmail(email).subscribe({
         next: (res) => {
           this.toastService.show(res.message, 'success');
-          this.authService.setRecoveryEmail(email);
+          this.authService.
+          setRecoveryEmail(email);
           this.router.navigate(['/auth/verify']);
         },
         error: (err) => {

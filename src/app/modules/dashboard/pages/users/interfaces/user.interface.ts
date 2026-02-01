@@ -15,16 +15,27 @@ export interface UserResponse {
     email: string;
 }
 
+//Separar que dto usars para cada cosa
+//todo create, visualizar get by id 
+
 export interface IUser {
     id: number;
-    user_name: string | null;
-    persons: {
+    user_name: string;
+    name: string;
+    last_name: string;
+    email: string;
+    phone?: string;
+    address?: string;
+    role: string;
+    status: string;
+
+    persons?: {
         name: string | null;
         last_name: string | null;
         email: string | null;
         phone: string | null;
         address: string | null;
-    } | null
+    } | null;
 }
 
 export interface PaginationInfo {
