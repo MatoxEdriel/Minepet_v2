@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -13,7 +13,6 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     //!withviewtransations toma los estilos o animacion del styles.css el problema es que
     //! se sobrepone con el cambio de dark mode 
-
 
     //? withViewTransitions()
     provideRouter(routes),

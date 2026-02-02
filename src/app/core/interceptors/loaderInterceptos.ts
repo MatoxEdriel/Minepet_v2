@@ -3,15 +3,25 @@ import { inject } from '@angular/core';
 import { finalize } from 'rxjs';
 import { LoaderService } from '../../shared/services/Loader.service';
 
+//!haremos que la request ignore ciertos eventos
+
 export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
     const loaderService = inject(LoaderService);
+    const skipLoader = req.headers.has('X-Skip-Loader');
 
 
-    loaderService.show();
+    if (!skipLoader) {
+        loaderService.show();
+    }
+
+
+
 
     return next(req).pipe(
         finalize(() => {
-            loaderService.hide();
+            if (!skipLoader) {
+                loaderService.hide();
+            }
         })
     );
 };

@@ -29,7 +29,11 @@ export class UserService {
 
 
   getById(id: number): Observable<IHttpResponse<IUser>> {
-    return this._http.get<IHttpResponse<IUser>>(`${this._endpoint}/${id}`);
+    return this._http.get<IHttpResponse<IUser>>(`${this._endpoint}/${id}`, {
+      headers: {
+        'X-Skip-Loader': 'true'
+      }
+    });
   }
 
 
@@ -37,15 +41,18 @@ export class UserService {
   //
   getAll(
     page: number,
-    limit: number
+    limit: number,
+    search?: string
   ): Observable<IHttpResponse<PaginatedResponse<IUser>>> {
+
+    const params: any = { page, limit };
+    if (search) params.search = search;
+
+
     return this._http.get<IHttpResponse<PaginatedResponse<IUser>>>(
       this._endpoint,
       {
-        params: {
-          page,
-          limit,
-        },
+        params
       }
     );
   }

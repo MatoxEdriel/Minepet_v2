@@ -7,15 +7,17 @@
 
       <div class="flex justify-between items-end">
         <div>
-          <h2 class="text-2xl font-bold">Staff Members</h2>
+          <h2 class="text-2xl font-bold">Personal</h2>
           <p class="text-xs text-gray-500 mt-1">Gestión de personal</p>
         </div>
-        <span class="bg-gray-200 dark:bg-gray-800 text-xs px-2 py-1 rounded">24 TOTAL</span>
+        <span class="bg-gray-200 dark:bg-gray-800 text-xs px-2 py-1 rounded uppercase">
+          {{ pagination.total }} TOTAL
+        </span>
       </div>
 
       <div class="relative">
         <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-500"></i>
-        <input type="text" placeholder="Buscar staff..."
+        <input (input)="onSearch($event)" type="text" placeholder="Buscar staff..."
           class="w-full bg-white dark:bg-[#1e212b] border border-gray-200 dark:border-gray-700 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
       </div>
 
@@ -28,11 +30,8 @@
 
       <div class="flex flex-col h-[calc(100vh-260px)]">
 
-        <div class="pr-1 flex flex-col gap-3 border border-red-500">
-          <app-usercard *ngFor="let user of userList; trackBy: trackById"
-           [user]="user" 
-           (click)="selectUser(user)"
-            [class.ring-2]="selectedUser?.id === user.id" [class.ring-blue-500]="selectedUser?.id === user.id"
+        <div class="pr-1 flex flex-col gap-3">
+          <app-usercard *ngFor="let user of userList; trackBy: trackById" [user]="user" (click)="selectUser(user)"
             class="cursor-pointer transition-all duration-200">
           </app-usercard>
         </div>
@@ -54,132 +53,28 @@
 
 
     <!-- AQUI SE SEPARARIA  -->
-    <div class="lg:col-span-8 flex flex-col gap-6">
-      <ng-container *ngIf="selectedUser; else noUserSelected">
-        <app-data-detail [user]="selectedUser">
+    <div class="lg:col-span-8 flex flex-col gap-6 relative min-h-[400px]">
 
-        </app-data-detail>
-
-
-      </ng-container>
-
-
-      <ng-template #noUserSelected>
-        <div class="flex flex-col items-center justify-center h-full text-gray-400">
-          <i class="fa-solid fa-users text-5xl mb-4"></i>
-          <p>Selecciona un miembro del staff para ver su informacion</p>
-        </div>
-
-
-      </ng-template>
-
-      <h1>INFORMACION DE CADA USUARIO</h1>
-
-
-      <!-- <div
-        class="bg-white dark:bg-[#1e212b] p-6 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
-        <div class="flex items-center gap-5">
-          <div class="w-20 h-20 rounded-2xl bg-orange-100 overflow-hidden">
-            <img src="https://i.pravatar.cc/150?img=5" class="w-full h-full object-cover">
-          </div>
-          <div>
-            <h1 class="text-2xl font-bold flex items-center gap-3">
-              Alejandro Rivera
-              <span
-                class="text-xs bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full border border-green-500/20">Active</span>
-            </h1>
-            <p class="text-gray-400 text-sm mt-1">Lead Hardware Technician • Since Jan 2022</p>
-
-            <div class="flex gap-3 mt-4">
-              <button
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
-                <i class="fa-solid fa-pen"></i> Edit Profile
-              </button>
-              <button
-                class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                Action
-              </button>
-            </div>
-          </div>
+      <div
+        class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/60 dark:bg-[#0f111a]/60 backdrop-blur-[2px] rounded-3xl transition-opacity duration-300 pointer-events-none"
+        [style.opacity]="loadingUser ? '1' : '0'" [style.pointer-events]="loadingUser ? 'auto' : 'none'">
+        <div class="flex flex-col items-center gap-3">
+          <i class="fa-solid fa-spinner animate-spin text-4xl text-blue-600"></i>
+          <p class="text-sm font-medium text-gray-500">Actualizando...</p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        <div class="bg-white dark:bg-[#1e212b] p-6 rounded-3xl">
-          <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-            <i class="fa-regular fa-user text-blue-500"></i> Personal Information
-          </h3>
-          <div class="grid grid-cols-2 gap-y-4 gap-x-2 text-sm">
-            <div>
-              <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Email Address</p>
-              <p class="font-medium mt-0.5">a.rivera&#64;techfix.com</p>
-            </div>
-            <div>
-              <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Phone</p>
-              <p class="font-medium mt-0.5">+1 (555) 012-3456</p>
-            </div>
-            <div>
-              <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Employee ID</p>
-              <p class="font-medium mt-0.5">TF-4021-AR</p>
-            </div>
-            <div>
-              <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Location</p>
-              <p class="font-medium mt-0.5">Downtown Branch</p>
-            </div>
-          </div>
+      <ng-container *ngIf="selectedUser">
+        <div class="transition-all duration-500" [style.filter]="loadingUser ? 'blur(1px)' : 'none'">
+          <app-data-detail [user]="selectedUser"></app-data-detail>
         </div>
+      </ng-container>
 
-        <div class="bg-white dark:bg-[#1e212b] p-6 rounded-3xl">
-          <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-            <i class="fa-solid fa-chart-line text-blue-500"></i> Performance
-          </h3>
-          <div class="flex items-center justify-around mt-2">
-            <div class="text-center p-3 bg-gray-50 dark:bg-[#15171e] rounded-xl w-32">
-              <p class="text-xs text-gray-500 mb-1">REPAIRS</p>
-              <p class="text-2xl font-bold">124</p>
-            </div>
-            <div class="text-center p-3 bg-blue-500/10 rounded-xl w-32 border border-blue-500/20">
-              <p class="text-xs text-blue-400 mb-1">SUCCESS RATE</p>
-              <p class="text-2xl font-bold text-blue-500">98.2%</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white dark:bg-[#1e212b] p-6 rounded-3xl">
-          <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-            <i class="fa-solid fa-shield-halved text-blue-500"></i> System Permissions
-          </h3>
-          <div class="space-y-3">
-            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-[#15171e] rounded-xl">
-              <div class="flex items-center gap-3">
-                <div class="bg-gray-700 rounded-full p-1"><i class="fa-solid fa-check text-xs text-white"></i></div>
-                <span class="text-sm font-medium">Create & Update Tickets</span>
-              </div>
-              <span class="text-[10px] text-blue-400 font-bold uppercase">Enabled</span>
-            </div>
-            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-[#15171e] rounded-xl">
-              <div class="flex items-center gap-3">
-                <div class="bg-gray-700 rounded-full p-1"><i class="fa-solid fa-check text-xs text-white"></i></div>
-                <span class="text-sm font-medium">Manage Inventory</span>
-              </div>
-              <span class="text-[10px] text-blue-400 font-bold uppercase">Enabled</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-red-500/5 border border-red-500/20 p-6 rounded-3xl">
-          <h3 class="text-lg font-bold mb-2 text-red-500">Account Access</h3>
-          <p class="text-xs text-gray-400 mb-4">Temporarily disable or reset this user's credentials.</p>
-          <button
-            class="w-full border border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white font-medium py-2 rounded-lg text-sm transition-all">
-            Deactivate Account
-          </button>
-        </div>
-
-      </div> -->
-
+      <div *ngIf="!selectedUser && !loadingUser"
+        class="flex flex-col items-center justify-center h-full text-gray-400 min-h-[300px] border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-3xl">
+        <i class="fa-solid fa-users text-5xl mb-4"></i>
+        <p>Selecciona un miembro del staff</p>
+      </div>
     </div>
-
   </div>
 </div>

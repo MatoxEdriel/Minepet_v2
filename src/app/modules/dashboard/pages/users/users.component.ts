@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../interfaces/table.interface';
 import { UserService } from './services/user.service';
 import { IUser } from './interfaces/user.interface';
 import { ToastService } from '../../../../shared/services/Toast.service';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-users',
@@ -17,6 +18,7 @@ export class UsersComponent implements OnInit {
   //sELECCIONAR cada usuario 
   selectedUser: IUser | null = null
 
+  loadingUser = false;
 
   userList: IUser[]
     = []
@@ -54,30 +56,62 @@ export class UsersComponent implements OnInit {
 
 
 
-
+  private searchSubject = new Subject<string>();
 
 
 
   constructor(
     private readonly _toastService: ToastService,
-    private readonly _userService: UserService) { }
+    private readonly _userService: UserService,
+    private readonly _cdr: ChangeDetectorRef,
+    private readonly _ngZone: NgZone) { }
 
   ngOnInit() {
     console.log("Si activa")
-    this.getAll();
+    this.searchSubject.pipe(
+      debounceTime(400),
+      distinctUntilChanged()
+    ).subscribe(term => {
+      this.pagination.page = 1;
+      this.getAll(term);
+    });
+
+    this.getAll()
   }
 
   trackById(index: number, user: IUser) {
     return user.id
   }
 
+  //todo investigar
+  onSearch(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.searchSubject.next(input.value);
+  }
+
   selectUser(user: IUser) {
+    if (this.selectedUser?.id === user.id) return;
+
+    this.loadingUser = true;
+
     this._userService.getById(user.id).subscribe({
       next: (response: any) => {
-        this.selectedUser = response.data.data;
+        setTimeout(() => {
+          this._ngZone.run(() => {
+            this.selectedUser = response.data.data ? response.data.data : response.data;
+            this.loadingUser = false;
+            this._cdr.detectChanges();
+          });
+        }, 100);
+
+
       },
       error: (err) => {
-        this._toastService.show('Error al cargar detalle', 'error');
+        this._ngZone.run(() => {
+          this._toastService.show('Error al cargar detalle', 'error');
+          this.loadingUser = false;
+          this._cdr.detectChanges();
+        });
       }
     });
   }
@@ -86,24 +120,23 @@ export class UsersComponent implements OnInit {
 
 
 
-
-  getAll() {
+  getAll(searchTerm?: string) {
 
 
     //recuerdo 
-    this._userService.getAll(this.pagination.page, this.pagination.limit).subscribe({
+    this._userService.getAll(this.pagination.page, this.pagination.limit, searchTerm).subscribe({
 
       next: (response) => {
 
         const data = response.data;
 
-        this.userList = data.items.map(user => ({
-          ...user
-        }));
+        this._ngZone.run(() => {
+          this.userList = [...data.items];
+          this.pagination.total = data.pagination.total;
+        });
 
-        this.pagination.total = data.pagination.total;
-
-
+        this._cdr.markForCheck(); // Marca para revisar
+        this._cdr.detectChanges()
 
 
       },

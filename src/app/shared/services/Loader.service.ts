@@ -8,10 +8,10 @@ export class LoaderService {
   isLoading = signal<boolean>(false);
 
   show() {
-    this.isLoading.set(true);
+    Promise.resolve().then(() => this.isLoading.set(true));
   }
 
   hide() {
-    this.isLoading.set(false);
+    Promise.resolve().then(() => this.isLoading.set(false));
   }
 }
