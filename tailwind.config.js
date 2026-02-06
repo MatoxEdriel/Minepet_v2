@@ -12,8 +12,11 @@ module.exports = {
                 'techfix-blue': '#140B05',
                 'techfix-orange': '#F39C4A',
                 'minepet-magenta': '#d946ef',
+                'minepet-pink': '#E25F95',
+                'minepet-pink-black': '#C44681'
 
 
+                //mantener color principal. 
 
 
             },
