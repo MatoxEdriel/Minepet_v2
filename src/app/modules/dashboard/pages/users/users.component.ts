@@ -25,7 +25,7 @@ export class UsersComponent implements OnInit {
 
   pagination = {
     page: 1,
-    limit: 5,
+    limit: 10,
     total: 0
 
   }

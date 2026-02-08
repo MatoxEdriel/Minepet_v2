@@ -1,80 +1,91 @@
 <div
-  class="flex flex-col justify-start items-start w-full min-h-[100vh] p-8 bg-gray-50 dark:bg-[#0f111a] text-gray-800 dark:text-white font-sans">
+  class="flex flex-col w-full h-full gap-4 overflow-hidden p-12 bg-white dark:bg-gray-900 text-gray-800 dark:text-white font-sans">
 
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full h-full">
+    <div class="lg:col-span-4 h-full flex flex-col overflow-hidden">
+      <div class="flex flex-col gap-4 shrink-0">
 
-    <div class="lg:col-span-4 flex flex-col gap-6">
-
-      <div class="flex justify-between items-end">
-        <div>
-          <h2 class="text-2xl font-bold">Personal</h2>
-          <p class="text-xs text-gray-500 mt-1">Gestión de personal</p>
+        <div class="flex justify-between items-end">
+          <div>
+            <h2 class="text-2xl font-bold">Personal</h2>
+            <p class="text-xs text-gray-500 mt-1">Gestión de personal</p>
+          </div>
+          <span class="bg-gray-200 dark:bg-gray-800 text-xs px-2 py-1 rounded uppercase">
+            {{ pagination.total }} TOTAL
+          </span>
         </div>
-        <span class="bg-gray-200 dark:bg-gray-800 text-xs px-2 py-1 rounded uppercase">
-          {{ pagination.total }} TOTAL
-        </span>
+
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-500"></i>
+          <input (input)="onSearch($event)" type="text" placeholder="Buscar staff..."
+            class="w-full bg-white dark:bg-[#1e212b] border border-gray-200 dark:border-gray-700 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+        </div>
+
+        <div class="flex gap-2 overflow-x-auto pb-1">
+          <button class="bg-blue-600 text-white text-xs px-4 py-1.5 rounded-full font-medium">All</button>
+          <button
+            class="bg-white dark:bg-[#1e212b] border dark:border-gray-700 text-xs px-4 py-1.5 rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Admin</button>
+        </div>
       </div>
 
-      <div class="relative">
-        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-500"></i>
-        <input (input)="onSearch($event)" type="text" placeholder="Buscar staff..."
-          class="w-full bg-white dark:bg-[#1e212b] border border-gray-200 dark:border-gray-700 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
-      </div>
+      <div
+        class="flex-1 min-h-0 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
 
-      <div class="flex gap-2 overflow-x-auto pb-2">
-        <button class="bg-blue-600 text-white text-xs px-4 py-1.5 rounded-full font-medium">All</button>
-        <button
-          class="bg-white dark:bg-[#1e212b] border dark:border-gray-700 text-xs px-4 py-1.5 rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Admin</button>
+        <div class="flex flex-col gap-3">
 
-      </div>
-
-      <div class="flex flex-col h-[calc(100vh-260px)]">
-
-        <div class="pr-1 flex flex-col gap-3">
           <app-usercard *ngFor="let user of userList; trackBy: trackById" [user]="user" (click)="selectUser(user)"
-            class="cursor-pointer transition-all duration-200">
+            class="cursor-pointer transition-all duration-200 block">
           </app-usercard>
+
+          <div *ngIf="userList.length === 0" class="text-center text-gray-400 py-10 text-sm">
+            No se encontraron usuarios.
+          </div>
+
         </div>
+
+      </div>
+
+      <div class="shrink-0 pt-2 pb-1">
         <button
-          class="mt-4 bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg"
+          class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg transition-colors"
           (click)="modalComponent.open()">
           <i class="fa-solid fa-user-plus"></i>
           Nuevo Usuario
         </button>
+      </div>
 
-        <app-create-user #modalComponent (userSaved)="refreshTable()">
+      <app-create-user #modalComponent (userSaved)="refreshTable()">
+      </app-create-user>
 
-        </app-create-user>
+    </div>
+
+    <div class="lg:col-span-8 flex flex-col gap-6 relative h-full overflow-hidden">
+
+      <div class="h-full w-full overflow-y-auto pr-2">
+
+        <div
+          class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/60 dark:bg-[#0f111a]/60 backdrop-blur-[2px] rounded-3xl transition-opacity duration-300 pointer-events-none"
+          [style.opacity]="loadingUser ? '1' : '0'" [style.pointer-events]="loadingUser ? 'auto' : 'none'">
+          <div class="flex flex-col items-center gap-3">
+            <i class="fa-solid fa-spinner animate-spin text-4xl text-blue-600"></i>
+            <p class="text-sm font-medium text-gray-500">Actualizando...</p>
+          </div>
+        </div>
+
+        <ng-container *ngIf="selectedUser">
+          <div class="transition-all duration-500" [style.filter]="loadingUser ? 'blur(1px)' : 'none'">
+            <app-data-detail [user]="selectedUser"></app-data-detail>
+          </div>
+        </ng-container>
+
+        <div *ngIf="!selectedUser && !loadingUser"
+          class="flex flex-col items-center justify-center h-full text-gray-400 min-h-[300px] border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-3xl">
+          <i class="fa-solid fa-users text-5xl mb-4"></i>
+          <p>Selecciona un miembro del staff</p>
+        </div>
 
       </div>
     </div>
 
-    <!-- todo Hacer que solo cargue el componente no todo  -->
-
-
-    <!-- AQUI SE SEPARARIA  -->
-    <div class="lg:col-span-8 flex flex-col gap-6 relative min-h-[400px]">
-
-      <div
-        class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/60 dark:bg-[#0f111a]/60 backdrop-blur-[2px] rounded-3xl transition-opacity duration-300 pointer-events-none"
-        [style.opacity]="loadingUser ? '1' : '0'" [style.pointer-events]="loadingUser ? 'auto' : 'none'">
-        <div class="flex flex-col items-center gap-3">
-          <i class="fa-solid fa-spinner animate-spin text-4xl text-blue-600"></i>
-          <p class="text-sm font-medium text-gray-500">Actualizando...</p>
-        </div>
-      </div>
-
-      <ng-container *ngIf="selectedUser">
-        <div class="transition-all duration-500" [style.filter]="loadingUser ? 'blur(1px)' : 'none'">
-          <app-data-detail [user]="selectedUser"></app-data-detail>
-        </div>
-      </ng-container>
-
-      <div *ngIf="!selectedUser && !loadingUser"
-        class="flex flex-col items-center justify-center h-full text-gray-400 min-h-[300px] border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-3xl">
-        <i class="fa-solid fa-users text-5xl mb-4"></i>
-        <p>Selecciona un miembro del staff</p>
-      </div>
-    </div>
   </div>
 </div>

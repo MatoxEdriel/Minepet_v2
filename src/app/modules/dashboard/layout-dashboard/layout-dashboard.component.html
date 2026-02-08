@@ -1,16 +1,19 @@
-<div class=" min-h-screen bg-slate-100 dark:bg-gray-900 flex flex-col transition-colors duration-300">
-    <app-Topbar (toggleMenu)="toggleSidebar()"></app-Topbar>
+<div
+    class="h-screen w-full bg-white dark:bg-gray-900 overflow-hidden flex text-gray-800 dark:text-white transition-colors duration-300">
 
+    <app-Sidebar [isOpen]="isSidebarOpen" [menuItems]="(menuData$ | async) || []"></app-Sidebar>
 
-    <app-Sidebar [isOpen]="isSidebarOpen" [menuItems]="(menuData$ | async) || []"> ></app-Sidebar>
-
-
-
-    <main class="flex-1 p-6 pt-20 transition-all duration-300 ease-in-out"
+    <div class="flex-1 flex mt-5 flex-col h-full transition-all duration-300 ease-in-out relative"
         [ngClass]="{'md:ml-64': isSidebarOpen, 'md:ml-0': !isSidebarOpen}">
 
-        <router-outlet></router-outlet>
+        <div class="shrink-0 z-40">
+            <app-Topbar (toggleMenu)="toggleSidebar()"></app-Topbar>
+        </div>
 
-    </main>
+        <main class="flex-1 overflow-hidden p-4 lg:p-6 relative">
+            <router-outlet></router-outlet>
+        </main>
+
+    </div>
 
 </div>
