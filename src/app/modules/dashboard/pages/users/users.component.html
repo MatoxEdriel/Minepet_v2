@@ -74,7 +74,10 @@
 
         <ng-container *ngIf="selectedUser">
           <div class="transition-all duration-500" [style.filter]="loadingUser ? 'blur(1px)' : 'none'">
-            <app-data-detail [user]="selectedUser"></app-data-detail>
+            <app-data-detail [user]="selectedUser" (desactivateEvent)="desactivateUser($event)">
+
+
+              ></app-data-detail>
           </div>
         </ng-container>
 

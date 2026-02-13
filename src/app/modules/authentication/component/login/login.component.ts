@@ -84,19 +84,42 @@ export class LoginComponent implements OnInit {
         }
       },
       error: (err) => {
-        const apiError = err.error;
-        let message = apiError?.message || 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
 
 
-        if (err.status === 401) {
-          message = 'Usuario o contraseña incorrectos. Inténtalo de nuevo.';
-        } else {
+        let message = 'Error desconocido';
 
-          message = apiError?.message || 'Error al conectar con el servidor';
+
+        if (err.error && err.error.message) {
+
+
+          if (Array.isArray(err.error.message)) {
+            message = err.error.message.join(', ');
+          } else {
+            message = err.error.message;
+          }
+
+
 
         }
 
+        else if (err.message) {
+          message = err.message;
+
+        }
+
+        if (typeof err.error === 'string') {
+          message = err.error;
+        }
+
         this.toastService.show(message, 'error');
+
+
+
+
+
+
+
+
       }
 
 

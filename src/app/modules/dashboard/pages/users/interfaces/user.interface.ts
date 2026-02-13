@@ -1,3 +1,5 @@
+import { UserStatus } from "../../../../../core/enums/status.enum";
+
 export interface CreateUserDto {
     name: string;
     last_name: string;
@@ -48,4 +50,10 @@ export interface PaginationInfo {
 export interface PaginatedResponse<T> {
     items: T[];
     pagination: PaginationInfo;
+}
+
+
+export interface UpdateStatusUser {
+    id: number;
+    status: UserStatus
 }

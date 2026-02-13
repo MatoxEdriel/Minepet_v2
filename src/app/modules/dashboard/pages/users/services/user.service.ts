@@ -5,7 +5,8 @@ import { StorageService } from '../../../../../shared/services/Storage.service';
 import { environments } from '../../../../../../environment/environment.dev';
 import { Observable } from 'rxjs';
 import { IHttpResponse } from '../../../../../interfaces/response.interface';
-import { CreateUserDto, IUser, PaginatedResponse, UserResponse } from '../interfaces/user.interface';
+import { CreateUserDto, IUser, PaginatedResponse, UpdateStatusUser, UserResponse } from '../interfaces/user.interface';
+import { UserStatus } from '../../../../../core/enums/status.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,7 @@ export class UserService {
 
 
 
-  
+
   getAll(
     page: number,
     limit: number,
@@ -55,6 +56,24 @@ export class UserService {
         params
       }
     );
+  }
+
+  //!SORPRESA 
+  //CUANDO USAR async y cunando no usarlo 
+
+  /*
+
+  async  
+  --- await 
+
+por default me regresar un observable como necesito que el componente cambie lo hare con eso 
+ene ste contexto el componente cambia de comportamiento 
+
+  */
+
+
+  desactiveUser(payload: UpdateStatusUser): Observable<IHttpResponse<void>> {
+    return this._http.patch<IHttpResponse<void>>(`${this._endpoint}/${payload.id}/status`, { status: payload.status });
   }
 
 

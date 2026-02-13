@@ -4,6 +4,7 @@ import { UserService } from './services/user.service';
 import { IUser } from './interfaces/user.interface';
 import { ToastService } from '../../../../shared/services/Toast.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { UserStatus } from '../../../../core/enums/status.enum';
 
 @Component({
   selector: 'app-users',
@@ -12,6 +13,8 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
   standalone: false
 })
 export class UsersComponent implements OnInit {
+
+
 
 
 
@@ -161,28 +164,39 @@ export class UsersComponent implements OnInit {
   }
 
 
-  handleTableAction(event: { row: any, action: string }) {
-    console.log('Evento recibido del hijo:', event);
+  desactivateUser(user: IUser) {
+    this.loadingUser = true;
 
-    if (event.action === 'edit') {
-      alert(`Editando al usuario: ${event.row.name}`);
+    this._userService.desactiveUser({ id: user.id, status: UserStatus.INACTIVE }).subscribe({
+      next: (response) => {
+        this._toastService.show(response.message, 'success');
 
-    } else if (event.action === 'delete') {
-      const confirmDelete = confirm(`¿Estás seguro de borrar a ${event.row.name}?`);
-      if (confirmDelete) {
-        this.userList = this.userList.filter(u => u.id !== event.row.id);
+        this.selectedUser = null;
+        this.getAll();
+
+        this.loadingUser = false;
+      },
+      error: (err) => {
+        this.loadingUser = false;
+        const message = err.error?.message || 'Error al desactivar usuario';
+        this._toastService.show(message, 'error');
       }
-    }
-  }
-
-
-
-  createUser() {
-
+    });
 
   }
+
+
 
   refreshTable() {
     this.getAll();
   }
+
+
+
+
+  //revisar
+
+
+
+
 }

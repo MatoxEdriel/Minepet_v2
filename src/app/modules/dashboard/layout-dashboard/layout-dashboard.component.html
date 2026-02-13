@@ -1,6 +1,9 @@
 <div
     class="h-screen w-full bg-white dark:bg-gray-900 overflow-hidden flex text-gray-800 dark:text-white transition-colors duration-300">
 
+    <div class="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm transition-opacity duration-300 md:hidden"
+        [class.opacity-0]="!isSidebarOpen" [class.pointer-events-none]="!isSidebarOpen" (click)="isSidebarOpen = false">
+    </div>
     <app-Sidebar [isOpen]="isSidebarOpen" [menuItems]="(menuData$ | async) || []"></app-Sidebar>
 
     <div class="flex-1 flex mt-5 flex-col h-full transition-all duration-300 ease-in-out relative"

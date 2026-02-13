@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IUser } from '../../../../modules/dashboard/pages/users/interfaces/user.interface';
 import { CommonModule } from '@angular/common';
 
@@ -10,8 +10,8 @@ import { CommonModule } from '@angular/common';
 })
 export class DataDetailComponent implements OnInit {
 
-
-  @Input() user: IUser | null = null
+  @Output() desactivateEvent = new EventEmitter<IUser>();
+  @Input() user!: IUser;
 
 
 
@@ -21,6 +21,9 @@ export class DataDetailComponent implements OnInit {
   ngOnInit() {
   }
 
+  onDesactivate() {
+    this.desactivateEvent.emit(this.user);
+  }
   getInitials(): string {
     if (!this.user?.name) return '??';
 
